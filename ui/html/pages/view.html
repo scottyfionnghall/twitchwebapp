@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {{range .}}
+        <div>
+            <img src="{{.ThumbnailUrl}}">
+            <a>{{.DisplayName}}</a>
+            {{if .IsLive}}
+            <a>Online</a>
+            {{else}}
+            <a>Offline</a>
+            {{end}}
+        </div>
+        {{end}}
+    </body>
+</html>
