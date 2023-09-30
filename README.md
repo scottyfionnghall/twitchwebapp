@@ -2,7 +2,7 @@
 
 Simple web app that displays if certian(user inputed) streamers are online on twitch.
 
-Made by using [Twitch API]()
+Made by using [Twitch API](https://dev.twitch.tv/docs/api/)
 
 ## To-Do List
 
