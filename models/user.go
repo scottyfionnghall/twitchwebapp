@@ -47,7 +47,7 @@ func Search(user_name string) (*User, error) {
 	json.Unmarshal(body, &users)
 
 	for _, user := range users.Users {
-		if strings.Compare(user_name, user.BrodcasterLogin) == 0 {
+		if strings.Compare(user_name, user.DisplayName) == 0 {
 			u = user
 		}
 	}

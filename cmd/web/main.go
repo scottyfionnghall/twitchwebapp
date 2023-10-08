@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -18,7 +19,11 @@ func main() {
 	router.HandlerFunc(http.MethodGet, "/", home)
 	router.HandlerFunc(http.MethodGet, "/view", view)
 
-	http.ListenAndServe(":8080", router)
+	err := http.ListenAndServe(":8080", router)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func get_auth() error {
