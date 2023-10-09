@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -20,7 +21,8 @@ func view(w http.ResponseWriter, r *http.Request) {
 	for _, name := range names {
 		chans = append(chans, find_streamer(name))
 	}
-	for n := range merge(chans...) {
+
+	for n := range merge(r.Context(), chans...) {
 		users = append(users, n)
 	}
 
@@ -57,15 +59,20 @@ func find_streamer(name string) <-chan models.User {
 	return out
 }
 
-func merge(cs ...<-chan models.User) <-chan models.User {
+func merge(ctx context.Context, cs ...<-chan models.User) <-chan models.User {
 	var wg sync.WaitGroup
 	out := make(chan models.User)
-
 	output := func(c <-chan models.User) {
 		defer wg.Done()
 
 		for n := range c {
-			out <- n
+			select {
+			case out <- n:
+			// use context to stop sending requests if
+			// original request cancels
+			case <-ctx.Done():
+				break
+			}
 		}
 	}
 
